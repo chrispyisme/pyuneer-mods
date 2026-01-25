@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 import os
+import sys
 
-uri = os.environ.get("REQUEST_URI", "/")
-method = os.environ.get("REQUEST_METHOD", "GET")
-print("Content-Type: text/html\n\n")
-print(f"URI: {uri}")
-print(f"Method: {method}")
+print("Content-Type: text/html\n")
+print("<h1>Pyuneer Framework</h1>")
+print("<p>Structure is set up! Next: Rewrite rules.</p>")
+print(f"<pre>SCRIPT_NAME: {os.environ.get('SCRIPT_NAME', '')}</pre>")
