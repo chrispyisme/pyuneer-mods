@@ -1,103 +1,64 @@
 #!/usr/bin/python3
 """
-Pyuneer CGI Entry Point - STEP 4: Routing
+Public Entry Point - CGI Router (Step 4)
+
+This module serves as the default HTTP endpoint for the public application.
+It processes all incoming requests, extracts routing information, and
+validates request parameters.
+
+Responsibilities:
+    - Initialize HTTP request and response objects
+    - Extract and parse URI and HTTP method from the request
+    - Return request metadata for routing validation
+    - Serve as the entry point for public-facing routes
+
+Returns:
+    HTTP response containing the extracted method and URI for route processing.
+
+Note:
+    This is the Pyuneer CGI Entry Point - STEP 4 in the routing pipeline.
 """
 import os
 import sys
-
 # Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+from lib.http.Request import Request
+from lib.http.Response import Response 
+from lib.routing.Router import Router
+from lib.di.Container import Container
+from lib.di.Autoloader import Autoloader
+from app.middleware.ResponseMiddleware import ResponseMiddleware
+request = Request()
+response = Response()
+container = Container()
+container.singleton("response", response)
+container.singleton("request", request)
+# Register response middleware in the container so routes can reference it
+container.singleton('response_mw', ResponseMiddleware())
 
-from lib.http.request import Request
-from lib.http.response import Response
-from lib.routing.router import Router
+# Initialize autoloader to scan directories and build class registry
+autoloader = Autoloader()
+autoloader.register_paths(["app", "lib"]).load()
+container.set_autoloader(autoloader)
+uri = request.get_uri()
+method = request.get_method()
+router = Router(request=request)
 
-# Create router
-router = Router()
 
-# Define routes using decorators
-@router.get('/')
-def home(request):
-    return f"""
-    <h1>Pyuneer Framework - Routing Working!</h1>
-    <p>Request: {request.method} {request.path}</p>
-    <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/hello/world">Hello World</a></li>
-        <li><a href="/user/john">User Profile</a></li>
-        <li><a href="/api/info">API Info</a></li>
-        <li><a href="/contact">Contact Form</a></li>
-    </ul>
-    """
+def test_all(container, request,  **kwargs):
+    id = kwargs.get("id", None)
+    if id:
+        custom_param = id
+    custom_param = kwargs.get("custom_param", "no_param")
+    response = container.make("response")
+    response.set_status_code(200)
+    response.set_content_type('text/html')
+    response.set_body(f"custom_param: {custom_param}")
+    response.send()
+router.add_route(uri="/", method="GET", handler=test_all, middleware=['response_mw'], handler_params={"custom_param": "home"})
+router.add_route(uri="/abc", method="GET", handler=test_all, middleware=['response_mw'])
+router.add_route(uri="/api/example", method="GET", handler="app.controllers.TestController@index", middleware=['response_mw'], handler_params={"config": "custom_value"})
+router.add_route(uri="/api/test_all/{id}", method="GET", handler=test_all, middleware=[])
+router.add_route(uri="/user/*", method="GET", handler=test_all, middleware=['response_mw'], handler_params={"custom_param": "user_wildcard"})
+router.dispatch(container)
 
-@router.get('/hello/{name}')
-def hello(request):
-    name = request.params.get('name', 'Guest')
-    return f"""
-    <h1>Hello, {name}!</h1>
-    <p>Your method was: {request.method}</p>
-    <p>Your URI was: {request.path}</p>
-    <a href="/">Go Back</a>
-    """
-
-@router.get('/user/{username}')
-def user_profile(request):
-    username = request.params.get('username', 'anonymous')
-    return f"""
-    <h1>User Profile: {username}</h1>
-    <p>This is a practical route we'll use for our website.</p>
-    """
-
-@router.get('/contact')
-def contact_form(request):
-    return """
-    <h1>Contact Us</h1>
-    <form method="POST" action="/contact">
-        <input type="text" name="name" placeholder="Your Name"><br>
-        <input type="email" name="email" placeholder="Your Email"><br>
-        <textarea name="message" placeholder="Your Message"></textarea><br>
-        <button type="submit">Send</button>
-    </form>
-    <a href="/">Go Back</a>
-    """
-
-@router.post('/contact')
-def contact_submit(request):
-    name = request.get('name', 'Anonymous')
-    email = request.get('email', 'No email')
-    message = request.get('message', 'No message')
-    
-    return f"""
-    <h1>Thank You, {name}!</h1>
-    <p>We received your message:</p>
-    <blockquote>{message}</blockquote>
-    <p>We'll respond to: {email}</p>
-    <a href="/">Go Home</a>
-    <a href="/contact">Send Another</a>
-    """
-
-@router.get('/api/info')
-def api_info(request):
-    return {
-        "framework": "Pyuneer",
-        "version": "0.1.0",
-        "status": "running",
-        "request": {
-            "method": request.method,
-            "path": request.path,
-            "headers": dict(request.headers)
-        }
-    }
-
-def main():
-    # Create request from CGI environment
-    request = Request()
-    
-    # Dispatch to router
-    response = router.dispatch(request)
-    
-    # Render response
-    response.render()
-
-if __name__ == '__main__':
-    main()
