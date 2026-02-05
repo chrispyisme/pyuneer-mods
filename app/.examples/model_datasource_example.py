@@ -41,9 +41,9 @@ import sys
 import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', ".."))
 
-from app.models.model import AbstractModel
-from app.datasources.json_datasource import JsonDatasource
-from app.datasources.file_datasource import FileDatasource
+from app.models.AbstractModel import AbstractModel
+from lib.db.datasources.json_datasource import JsonDatasource
+from lib.db.datasources.file_datasource import FileDatasource
 
 
 # Example 1: User model with JSON datasource

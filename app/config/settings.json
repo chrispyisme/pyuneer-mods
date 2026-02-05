@@ -1,5 +1,21 @@
 {
-    "lib_paths": ["../lib", "../app"],
+    "log_format":"%(asctime)s [%(levelname)8s] %(name)s:%(filename)s:%(lineno)d - %(funcName)s() - %(message)s",
+    "paths":{
+        "document_root":"/usr/lib/cgi-bin",
+        "document_root_uri":"/",
+        "public_root":"/public",
+        "user_root":"/portal/user",
+        "app_root":"/app",
+        "models":"/models",
+        "views":"/views/routes",
+        "controllers":"/controllers/routes",
+        "logs":"/logs",
+        "config":"/config",
+        "middlewares":"/controllers/middleware",
+        "templates":"/views/templates"
+    },
+
+    "autoload_paths": ["/lib", "/app"],
     "db": {
         "type": "smysql",
         "host": "localhost",

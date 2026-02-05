@@ -172,7 +172,7 @@ All public methods include:
 ## Next Steps
 
 For enhanced developer experience:
-1. Generate HTML documentation: `pydoc -w app.models app.datasources lib.routing lib.di`
+1. Generate HTML documentation: `pydoc -w app.models lib.db.datasources lib.routing lib.di`
 2. IDE hover documentation will now work automatically
 3. Consider adding type stub files (.pyi) for complex types
 4. Enable automatic docstring generation in CI/CD pipeline
