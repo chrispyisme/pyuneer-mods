@@ -1,0 +1,10 @@
+{
+    "lib_paths": ["../lib", "../app"],
+    "db": {
+        "type": "smysql",
+        "host": "localhost",
+        "user": "pycgi",
+        "password": "bf6912",
+        "db":"httpstack"
+    }
+}
