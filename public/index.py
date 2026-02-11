@@ -22,18 +22,14 @@ import os
 import sys
 # Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-from lib.http.Request import Request
-from lib.http.Response import Response 
-from lib.routing.Router import Router
-from lib.di.Container import Container
-from lib.di.Autoloader import Autoloader
-from app.controllers.middleware.InitView import InitView
-from app.App import App
 
-app = App(config="/usr/lib/cgi-bin/app/config/settings.json")
+from _.autoload import Autoloader, AutoloaderException
+from lib.di.Container import Container
+from lib.http.Request import Request
+from _.App import App
+
+app = App()
 
 # Initialize autoloader to scan directories and build class registry                                                                                                                                                                                                                                                                                                                                                                                                            
 
-
-app.run()
 

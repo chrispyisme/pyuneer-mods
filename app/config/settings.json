@@ -15,7 +15,7 @@
         "templates":"/views/templates"
     },
 
-    "autoload_paths": ["/lib", "/app"],
+    "autoload_paths": ["/usr/lib/cgi-bin/lib", "/usr/lib/cgi-bin/app"],
     "db": {
         "type": "smysql",
         "host": "localhost",

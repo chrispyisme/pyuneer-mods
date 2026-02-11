@@ -6,6 +6,6 @@ class Home:
         
     def index(self, container, request, **params):
         response = container.make(Response)
-        
 
+        response.set_body(f"<h1>{request.get_uri()}</h1>")
         response.send()
