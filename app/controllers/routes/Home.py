@@ -5,7 +5,8 @@ class Home:
         pass
         
     def index(self, container, request, **params):
-        response = container.make(Response)
+        
+        response = container.make("response")
 
-        response.set_body(f"<h1>{request.get_uri()}</h1>")
+        response.set_body(f"<h1>{response.get_body()}{request.get_params()}</h1>")
         response.send()

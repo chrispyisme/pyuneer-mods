@@ -22,14 +22,29 @@ import os
 import sys
 # Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-
-from _.autoload import Autoloader, AutoloaderException
+import re
+from lib.di import Autoloader, AutoloaderException
 from lib.di.Container import Container
 from lib.http.Request import Request
-from _.App import App
+from app.App import App
 
+def handler_mw(c,req, nxt):
+    res = c.make("response")
+    res.set_status_code(200)
+    res.set_header("Content-Type", "text/html")
+    res.set_body("content")
+    nxt()
+
+
+reg = '\d+'
 app = App()
+app.router.register_middleware('handler_mw', "DocInit")
+app._GET(uri="/api/{id:\d+}", handler="Home@index", middleware=['handler_mw'])
+app._GET(uri="/{reg}", handler="Home@index", middleware=['handler_mw'])
+app._GET(uri="/", handler="Home@index", middleware=['handler_mw'])
+#app.router.use("public.index.handler_mw")
+#app.router.register_middleware('handler_mw', handler_mw)
 
-# Initialize autoloader to scan directories and build class registry                                                                                                                                                                                                                                                                                                                                                                                                            
 
+app.run()
 
