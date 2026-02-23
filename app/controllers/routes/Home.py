@@ -5,8 +5,10 @@ class Home:
         pass
         
     def index(self, container, request, **params):
-        
-        response = container.make("response")
+        try:
+            response = container.make("response")
 
-        response.set_body(f"<h1>{response.get_body()}{request.get_params()}</h1>")
-        response.send()
+            response.set_body(f"{response.get_body()}{request.get_params()}")
+            response.send()
+        except Exception as e:
+            print(f"Error in Home@index: {e}")

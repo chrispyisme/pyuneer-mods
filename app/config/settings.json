@@ -1,18 +1,10 @@
 {
     "log_format":"%(asctime)s [%(levelname)8s] %(name)s:%(filename)s:%(lineno)d - %(funcName)s() - %(message)s",
+    "app_root":"/usr/lib/cgi-bin/app",
     "paths":{
-        "document_root":"/usr/lib/cgi-bin",
-        "document_root_uri":"/",
-        "public_root":"/public",
-        "user_root":"/portal/user",
-        "app_root":"/app",
-        "models":"/models",
         "views":"/views/routes",
-        "controllers":"/controllers/routes",
-        "logs":"/logs",
-        "config":"/config",
-        "middlewares":"/controllers/middleware",
-        "templates":"/views/templates"
+        "templates":"/views/templates",
+        "models":"/models/routes"
     },
 
     "autoload_paths": ["/usr/lib/cgi-bin/lib", "/usr/lib/cgi-bin/app"],
@@ -22,5 +14,5 @@
         "user": "pycgi",
         "password": "bf6912",
         "db":"httpstack"
-    }
+    },
 }

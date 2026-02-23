@@ -1,26 +1,5 @@
-services = [
-    {
-        "abstract":"router",
-        "concrete":"lib.routing.Router.Router",
-        "type":"singleton",
-        "params": {
-            "request":"Request"
-        },
-        "tags":[
-            "API", "router", "REST"
-        ]
-    },
-    {
-        "abstract":"Request",
-        "concrete":"lib.http.Request.Request",
-        "type":"factory",
-        "params": {
-            "request":"lib.http.Request.Request"
-        },
-        "tags":[
-            "API", "router", "REST"
-        ]       
-    }
-]
-
-__all__ = ["services"]
+def make_template_service( c, base_layout='',  assets=[]): 
+    print(c)                                                                                                                          
+    sm = c.get_property("service_manager")                                                                  
+    settings = sm.get_property("settings")
+    return settings

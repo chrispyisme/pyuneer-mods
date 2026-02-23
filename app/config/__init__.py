@@ -8,7 +8,19 @@ settings = {
         "templates":"/views/templates",
         "views":"/views/routes",
         "models":"/models/routes",
+    },
+    
+    "base":{
+        "template":"base.html",
+        "assets": "/static/assets/enabled",
+        "log_file": "/template.log"
+        
+    },
+    "logger":{
+        "log_dir": "/usr/lib/cgi-bin/app/logs",
+        "format": "%(asctime)s [%(levelname)8s] %(filename)s:%(lineno)d - %(message)s"
     }
+    
 }
 # Prepend document_root + app_root to file_load settings
 file_load = settings["file_load"]
