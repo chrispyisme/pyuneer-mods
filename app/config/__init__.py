@@ -7,12 +7,12 @@ settings = {
     "file_load":{
         "templates":"/views/templates",
         "views":"/views/routes",
-        "models":"/models/routes",
+        "models":"/models/routes"
     },
     
     "base":{
         "template":"base.html",
-        "assets": "/static/assets/enabled",
+        
         "log_file": "/template.log"
         
     },
@@ -24,8 +24,12 @@ settings = {
 }
 # Prepend document_root + app_root to file_load settings
 file_load = settings["file_load"]
-file_load = {namespace: f"{settings['document_root']}{settings['app_root']}{path}" 
-             for namespace, path in file_load.items()}
+for namespace, path in file_load.items():
+    if "/usr/lib/cgi-bin" not in path:
+        # Ensure path is valid and namespace is not empty:      
+        file_load[namespace] = f"{settings['document_root']}{settings['app_root']}{path}"
+    else:
+        file_load[namespace] = path  # Keep as is if it already contains the full path
 
 class_load = settings["class_load"]
 class_load = [f"{settings['document_root']}{p}" for p in class_load]

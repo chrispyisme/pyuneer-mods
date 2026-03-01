@@ -6,9 +6,10 @@ class Home:
         
     def index(self, container, request, **params):
         try:
-            response = container.make("response")
-
-            response.set_body(f"{response.get_body()}{request.get_params()}")
-            response.send()
+            sm = container.get_property("service_manager")
+            view = sm.get_property("view")
+            body = view.res.get_body()
+            view.res.set_body(f"{body}<div>welcome to home page</div>")
+            view.res.send()
         except Exception as e:
             print(f"Error in Home@index: {e}")

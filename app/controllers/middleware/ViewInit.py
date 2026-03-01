@@ -3,7 +3,7 @@ import sys
 
 import lxml.html
 from typing import Callable
-from lib.service.ServiceManager import ServiceManager
+from lib.di.ServiceManager import ServiceManager
 from lib.http.Response import Response
 from lib.http.Request import Request
 from lib.fs.files import FileSystem
@@ -18,8 +18,8 @@ class ViewInit:
         
     def handle(self, container, request, next):
         self.next = next
-        res = container.make("response")
-        res.set_header("X-View-Init", "True")
+        view = container.make("View", container=container, request=request)
+        container.add_property("view", view)
         self.next()
 
         
